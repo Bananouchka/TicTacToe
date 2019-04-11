@@ -25,16 +25,6 @@ mvn clean package
 java -jar target/tictactoe-0.0.1-SNAPSHOT.jar
 ```
 
-Instructions on how to play 
-
-## Running the tests
-
-mvn run tests
-
-### Break down into end to end tests
-
-Main methods have been tested. Simple test cases have been omitted.
-
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
@@ -45,7 +35,7 @@ Main methods have been tested. Simple test cases have been omitted.
 
 ## Acknowledgments
 
-Some tests have been omitted for lack of time. Tests are passing but have not been redesigned to match the appropriate last minute changes.
+Main methods have been tested. Simple test cases have been omitted.Some tests have been omitted for lack of time. Tests are passing but have not been redesigned to match the appropriate last minute changes.
 
 Extension possible:
 	* Add interface to save and load games
