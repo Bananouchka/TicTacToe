@@ -40,11 +40,23 @@ public class GridTest {
 
     @Test
     public void placePieceTest() {
-        assertEquals(true, grid.placePiece(3, 0, Piece.RED));
-        assertEquals(true, grid.placePiece(2, 0, Piece.RED));
-        assertEquals(true, grid.placePiece(1, 0, Piece.RED));
-        assertEquals(true, grid.placePiece(3, 1, Piece.BLUE));
-        assertEquals(true, grid.placePiece(3, 3, Piece.BLUE));
+        grid.placePiece(3, 0, Piece.RED);
+        grid.placePiece(2, 0, Piece.RED);
+        grid.placePiece(1, 0, Piece.RED);
+        grid.placePiece(3, 1, Piece.BLUE);
+        grid.placePiece(3, 3, Piece.BLUE);
+        
+        assertEquals(true, grid.getGrid()[3][0] == Piece.RED);
+        assertEquals(true, grid.getGrid()[2][0] == Piece.RED);
+        assertEquals(true, grid.getGrid()[1][0] == Piece.RED);
+        assertEquals(true, grid.getGrid()[3][1] == Piece.BLUE);
+        assertEquals(true, grid.getGrid()[3][3] == Piece.BLUE);
+        
+        assertEquals(false, grid.getGrid()[0][0] == Piece.RED);
+        assertEquals(false, grid.getGrid()[0][2] == Piece.RED);
+        assertEquals(false, grid.getGrid()[0][1] == Piece.RED);
+        assertEquals(false, grid.getGrid()[3][2] == Piece.RED);
+        assertEquals(false, grid.getGrid()[1][3] == Piece.RED);
     }
 
     @Test(expected = IllegalArgumentException.class)

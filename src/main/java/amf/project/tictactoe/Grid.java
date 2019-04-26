@@ -50,19 +50,17 @@ public class Grid {
      * 
      * @param column column the piece will be placed on
      * @param piece  piece that has to be placed
-     * @return true if inserted
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if place cannot be inserted
      */
-    public boolean placePiece(int row, int column, Piece piece) throws IllegalArgumentException {
+    public void placePiece(int row, int column, Piece piece) throws IllegalArgumentException {
         if (row >= getGridRowsNb() || row < 0 
         		|| column >= getGridColumnsNb() || column < 0 
         		|| piece == null || piece == Piece.EMPTY
-                || grid[row][column] != Piece.EMPTY)
+        		|| grid[row][column] != Piece.EMPTY)
             throw new IllegalArgumentException();
         
         grid[row][column] = piece;
         availableBox--;
-        return true;
     }
 
     /**

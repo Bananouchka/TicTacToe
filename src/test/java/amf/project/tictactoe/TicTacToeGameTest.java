@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class TicTacToeGameTest {
     public void init() {
         expectedOuput = new ByteArrayOutputStream();
         tictactoe = Mockito.spy(new TicTacToeGame());
-//        System.setOut(new PrintStream(expectedOuput));
+        System.setOut(new PrintStream(expectedOuput));
     }
 
     @After
