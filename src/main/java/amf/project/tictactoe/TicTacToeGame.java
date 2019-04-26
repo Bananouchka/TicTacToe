@@ -71,30 +71,35 @@ public class TicTacToeGame {
      * @return 0 if exiting the game, 1 is playing again
      */
     public int playGrid() {
-        int insertedRow;
-        Integer givenColumn = null;
+        Integer givenColumn = null, givenRow = null;
         boolean hasWon = false;
         int exit = 0;
 
         do {
             try {
                 nbOfTurns++;
-                System.out.print("Player " + getPieceTurn() + " move : (-1 for help)");
+                System.out.println("Player " + getPieceTurn() + " which row would you like to place the piece on ? (-1 for help)");
+                givenRow = scanner.nextInt();
+                if (givenRow < 0 && -5 < givenRow) throw new IllegalArgumentException();
+                System.out.println("Player " + getPieceTurn() + " which column would you like to place the piece on ? (-1 for help)");
                 givenColumn = scanner.nextInt();
-                insertedRow = grid.placePiece(givenColumn, getPieceTurn());
-                hasWon = hasWon(insertedRow, givenColumn);
+                grid.placePiece(givenRow, givenColumn, getPieceTurn());
+                hasWon = hasWon(givenRow, givenColumn);
             } catch (IllegalArgumentException e) {
                 nbOfTurns--;
-                if (givenColumn < 0 && givenColumn > -5) {
-                    exit = doChoice(Action.fromInteger(givenColumn));
-                    if (exit == 1 || exit == 2)
-                        return 1;
+                if (givenRow < 0 && givenRow > -5) {
+                    exit = doChoice(Action.fromInteger(givenRow));
+            	} else if (givenColumn < 0 && givenColumn > -5) {
+                	exit = doChoice(Action.fromInteger(givenColumn));
+                }
+                if (exit >= 1 && exit <= 3) {
+                    return 1;
                 } else {
-                    System.out.println("\nMove not allowed. The column has no empty box or column is out of bound.");
+                    System.out.println("\nMove not allowed. Row or column has no empty box or row or column is out of bound.");
                 }
             } catch (InputMismatchException e) {
                 nbOfTurns--;
-                System.out.println("\nMove should be a column number.");
+                System.out.println("\nMove should be a number.");
                 scanner.nextLine();
             }
             grid.printCurrentGrid();
@@ -140,6 +145,7 @@ public class TicTacToeGame {
             exit = 2;
             break;
         case RESTART:
+        	exit = 3;
             resetGame();
             break;
         default:
@@ -166,6 +172,8 @@ public class TicTacToeGame {
         System.out.println("Players O and X play alternatively.");
         System.out.println(
                 "After \"Player move\" appears, type the column number between 0 and " + grid.getGridColumnsNb());
+        System.out.println(
+                "Then type the row number between 0 and " + grid.getGridRowsNb());
         System.out.println("-------------------------------");
         printMenu();
     }

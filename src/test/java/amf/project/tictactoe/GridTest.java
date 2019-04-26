@@ -40,32 +40,29 @@ public class GridTest {
 
     @Test
     public void placePieceTest() {
-        assertEquals(3, grid.placePiece(0, Piece.RED));
-        assertEquals(2, grid.placePiece(0, Piece.RED));
-        assertEquals(1, grid.placePiece(0, Piece.RED));
-        assertEquals(3, grid.placePiece(1, Piece.BLUE));
-        assertEquals(3, grid.placePiece(3, Piece.BLUE));
+        assertEquals(true, grid.placePiece(3, 0, Piece.RED));
+        assertEquals(true, grid.placePiece(2, 0, Piece.RED));
+        assertEquals(true, grid.placePiece(1, 0, Piece.RED));
+        assertEquals(true, grid.placePiece(3, 1, Piece.BLUE));
+        assertEquals(true, grid.placePiece(3, 3, Piece.BLUE));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void placePieceOutBoundExceptionTest() {
-        grid.placePiece(12, Piece.RED);
+        grid.placePiece(0, 12, Piece.RED);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void placePieceExceptionTest() {
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
+        grid.placePiece(0, 0, Piece.RED);
+        grid.placePiece(0, 0, Piece.RED);
     }
 
     @Test
     public void checkColumnTest() {
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.RED);
+        grid.placePiece(3, 0, Piece.RED);
+        grid.placePiece(2, 0, Piece.RED);
+        grid.placePiece(1, 0, Piece.RED);
 
         assertEquals(true, grid.checkColumn(1, 0, Piece.RED));
         assertEquals(true, grid.checkColumn(2, 0, Piece.RED));
@@ -101,9 +98,9 @@ public class GridTest {
 
     @Test
     public void checkRowTest() {
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(1, Piece.RED);
-        grid.placePiece(2, Piece.RED);
+        grid.placePiece(3, 0, Piece.RED);
+        grid.placePiece(3, 1, Piece.RED);
+        grid.placePiece(3, 2, Piece.RED);
         assertEquals(true, grid.checkRow(3, 0, Piece.RED));
         assertEquals(true, grid.checkRow(3, 1, Piece.RED));
         assertEquals(true, grid.checkRow(3, 2, Piece.RED));
@@ -138,13 +135,9 @@ public class GridTest {
 
     @Test
     public void checkDiagonalOneTest() {
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(0, Piece.BLUE);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(1, Piece.BLUE);
-        grid.placePiece(1, Piece.RED);
-        grid.placePiece(1, Piece.BLUE);
-        grid.placePiece(2, Piece.RED);
+        grid.placePiece(3, 2, Piece.RED);
+        grid.placePiece(2, 1, Piece.RED);
+        grid.placePiece(1, 0, Piece.RED);
         assertEquals(true, grid.checkDiagonal(3, 2, Piece.RED));
         assertEquals(true, grid.checkDiagonal(2, 1, Piece.RED));
         assertEquals(true, grid.checkDiagonal(1, 0, Piece.RED));
@@ -180,13 +173,9 @@ public class GridTest {
 
     @Test
     public void checkDiagonalTwoTest() {
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(2, Piece.BLUE);
-        grid.placePiece(0, Piece.RED);
-        grid.placePiece(1, Piece.BLUE);
-        grid.placePiece(1, Piece.RED);
-        grid.placePiece(2, Piece.BLUE);
-        grid.placePiece(2, Piece.RED);
+        grid.placePiece(3, 0, Piece.RED);
+        grid.placePiece(2, 1, Piece.RED);
+        grid.placePiece(1, 2, Piece.RED);
 
         assertEquals(true, grid.checkDiagonal(3, 0, Piece.RED));
         assertEquals(true, grid.checkDiagonal(2, 1, Piece.RED));

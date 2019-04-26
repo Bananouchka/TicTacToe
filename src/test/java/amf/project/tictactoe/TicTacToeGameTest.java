@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class TicTacToeGameTest {
     public void init() {
         expectedOuput = new ByteArrayOutputStream();
         tictactoe = Mockito.spy(new TicTacToeGame());
-        System.setOut(new PrintStream(expectedOuput));
+//        System.setOut(new PrintStream(expectedOuput));
     }
 
     @After
@@ -34,7 +33,7 @@ public class TicTacToeGameTest {
 
     @Test
     public void startGameSuccessWithProperParamTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("2\n2\n2\n0\n0\n1\nN".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n2\n2\n1\n0\n0\n0\n0\n1\nN".getBytes());
         tictactoe.setScanner(expectedInput);
         tictactoe.startGame();
         Mockito.verify(tictactoe, Mockito.times(1)).setGrid(2, 2, 2);
@@ -44,7 +43,7 @@ public class TicTacToeGameTest {
 
     @Test
     public void startGameSuccessWithWrongParamTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("a\n2\na\n2\n2\n2\n2\n0\n0\n1\nN".getBytes());
+        expectedInput = new ByteArrayInputStream("a\n2\n2\n2\n1\n0\n0\n0\n0\n1\nN".getBytes());
         tictactoe.setScanner(expectedInput);
         tictactoe.startGame();
         Mockito.verify(tictactoe, Mockito.times(1)).setGrid(2, 2, 2);
@@ -54,7 +53,7 @@ public class TicTacToeGameTest {
 
     @Test
     public void startGameSuccessWithPlayAgainTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("2\n2\n2\n0\n0\n1\nY\n2\n2\n2\n0\n0\n1\nN".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n2\n2\n1\n0\n0\n0\n0\n1\nY\n2\n2\n2\n1\n0\n0\n0\n0\n1\nN".getBytes());
         tictactoe.setScanner(expectedInput);
         tictactoe.startGame();
         Mockito.verify(tictactoe, Mockito.times(2)).setGrid(2, 2, 2);
@@ -64,7 +63,7 @@ public class TicTacToeGameTest {
 
     @Test
     public void playGridSuccessTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("0\n0\n1\n0\n2\nN".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n1\n0\n0\n2\n2\nN".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(1, exit);
@@ -77,16 +76,17 @@ public class TicTacToeGameTest {
 
     @Test
     public void playGridSuccessWithExitInputKeyTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("0\n0\n-3".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n-3".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(1, exit);
         Mockito.verify(tictactoe, Mockito.times(1)).doChoice(Action.EXIT);
         Mockito.verify(grid, Mockito.times(2)).printCurrentGrid();
     }
-
+    
+    @Test
     public void playGridWithRestartKeyTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("0\n0\n-4".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n-4".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(1, exit);
@@ -96,7 +96,7 @@ public class TicTacToeGameTest {
 
     @Test
     public void playGridSuccessWithOneWrongInputTypeTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("0\n0\nfds\n1\n0\n2\nN".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\nfds\n2\n1\n0\n0\n2\n2\nN".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(1, exit);
@@ -105,32 +105,32 @@ public class TicTacToeGameTest {
 
     @Test
     public void playGridSuccessWithReplayTest() throws IOException {
-        expectedInput = new ByteArrayInputStream("0\n0\n1\n0\n2\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n1\n0\n0\n-2\nY".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
-        assertEquals(0, exit);
-        Mockito.verify(grid, Mockito.times(5)).printCurrentGrid();
+        assertEquals(1, exit);
+        Mockito.verify(grid, Mockito.times(4)).printCurrentGrid();
     }
 
     @Test
     public void hasWonSuccessTest() {
-        expectedInput = new ByteArrayInputStream("0\n0\n1\n0\n2\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n1\n0\n0\n2\n2\nY".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(0, exit);
         assertEquals(true, tictactoe.hasWon(2, 2));
-        expectedInput = new ByteArrayInputStream("0\n0\n2\n1\n1\n2\n0\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n2\n2\n1\n1\n1\n1\n2\n0\n0\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         assertEquals(0, exit);
         assertEquals(true, tictactoe.hasWon(1, 1));
-        expectedInput = new ByteArrayInputStream("0\n0\n2\n1\n1\n2\n2\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n2\n2\n1\n1\n1\n1\n2\n0\n2\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         tictactoe.getGrid().printCurrentGrid();
         assertEquals(0, exit);
         assertEquals(true, tictactoe.hasWon(1, 1));
-        expectedInput = new ByteArrayInputStream("0\n1\n2\n1\n0\n1\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n2\n1\n2\n2\n1\n1\n1\n0\n0\n1\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         assertEquals(0, exit);
@@ -139,22 +139,22 @@ public class TicTacToeGameTest {
 
     @Test
     public void hasWonFalseTest() {
-        expectedInput = new ByteArrayInputStream("0\n0\n1\n0\n2\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n1\n0\n0\n2\n2\nY".getBytes());
         setMocks();
         int exit = tictactoe.playGrid();
         assertEquals(0, exit);
         assertEquals(false, tictactoe.hasWon(1, 1));
-        expectedInput = new ByteArrayInputStream("0\n1\n2\n1\n0\n1\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n2\n1\n2\n2\n1\n1\n1\n0\n0\n1\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         assertEquals(0, exit);
         assertEquals(false, tictactoe.hasWon(0, 0));
-        expectedInput = new ByteArrayInputStream("0\n0\n2\n1\n1\n2\n0\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n2\n2\n1\n1\n1\n1\n2\n0\n0\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         assertEquals(0, exit);
         assertEquals(false, tictactoe.hasWon(2, 0));
-        expectedInput = new ByteArrayInputStream("0\n0\n2\n1\n1\n2\n2\nY".getBytes());
+        expectedInput = new ByteArrayInputStream("2\n0\n1\n0\n2\n2\n2\n1\n1\n1\n1\n2\n0\n2\nY".getBytes());
         setMocks();
         exit = tictactoe.playGrid();
         assertEquals(0, exit);
